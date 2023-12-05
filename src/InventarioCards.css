@@ -1,0 +1,33 @@
+/*InventarioCards.css*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .sin-stock {
+    background-color: #f75b5b;
+  }
+
+  /* .non-edit-mod {
+    background-color: #f0f0f0;
+  } */
+  
+  table, th, td {
+    border: 1px solid black;
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #afafaf;
+  }
+
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box; 
+  }
+  
