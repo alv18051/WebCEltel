@@ -26,7 +26,6 @@ const ColaboradoresData = [
     const handleInputChange = (event, id, field) => {
       const newData = data.map(item => {
         if (item.IDColaborador === id) {
-          // Adjust data types as necessary
           return { ...item, [field]: event.target.value };
         }
         return item;

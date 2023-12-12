@@ -32,7 +32,7 @@ const inventariosData = [
           return item;
         });
         setData(newData);
-        console.log(newData); // Check the updated data
+        console.log(newData);
     };
 
 

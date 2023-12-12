@@ -25,7 +25,6 @@ const OrdenesData = [
     const handleInputChange = (event, id, field) => {
       const newData = data.map(item => {
         if (item.IDOrden === id) {
-          // Assuming all fields are strings; adjust if necessary
           return { ...item, [field]: event.target.value };
         }
         return item;
