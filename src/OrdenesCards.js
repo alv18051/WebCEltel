@@ -15,6 +15,7 @@ const OrdenesData = [
 
     const [isEditMode, setIsEditMode] = useState(false);
     const [data, setData] = useState(OrdenesData);
+    const [searchTerm, setSearchTerm] = useState('');
 
 
     const toggleEditMode = () => {
@@ -31,10 +32,26 @@ const OrdenesData = [
       });
       setData(newData);
     };
+
+    const filteredData = data.filter(item => {
+      return (
+        item.IDOrden.toString().includes(searchTerm) ||
+        item.Estado.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.Descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.FechaEntrega.toString().includes(searchTerm)
+      );
+    });
+
     
     return (
       <div>
         <h2>Registro de Ordenes</h2>
+        <input 
+          type="text" 
+          placeholder="Buscar..." 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <button onClick={toggleEditMode}>{isEditMode ? 'Guardar' : 'Editar'}</button>
         <table>
           <thead>
@@ -46,7 +63,7 @@ const OrdenesData = [
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
+            {filteredData.map((item) => (
               <tr key={item.IDOrden}>
                 <td>{item.IDOrden}</td>
                 <td>{isEditMode ? <input type="text" value={item.Estado} onChange={(e) => handleInputChange(e, item.IDOrden, 'Estado')} /> : item.Estado}</td>

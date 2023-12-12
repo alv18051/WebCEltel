@@ -16,6 +16,7 @@ const inventariosData = [
     
     const [isEditMode, setIsEditMode] = useState(false);
     const [data, setData] = useState(inventariosData);
+    const [searchTerm, setSearchTerm] = useState('');
 
 
     const toggleEditMode = () => {
@@ -33,11 +34,28 @@ const inventariosData = [
         setData(newData);
         console.log(newData); // Check the updated data
     };
+
+
+    const filteredData = data.filter(item => {
+      return (
+        item.IDRepuesto.toString().includes(searchTerm) ||
+        item.Nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.Cantidad.toString().includes(searchTerm) ||
+        item.Precio.toString().includes(searchTerm)
+      );
+    });
+    
     
 
     return (
       <div>
         <h2>Inventario de repuestos</h2>
+        <input 
+          type="text" 
+          placeholder="Buscar..." 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <button onClick={toggleEditMode}>{isEditMode ? 'Guardar' : 'Editar'}</button>
         <table>
           <thead>
@@ -49,7 +67,7 @@ const inventariosData = [
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
+            {filteredData.map((item) => (
               <tr key={item.IDRepuesto} className={`${item.Cantidad === 0 ? 'sin-stock' : ''} ${!isEditMode ? 'non-edit-mode' : ''}`}>
                 <td>{item.IDRepuesto}</td>
                 <td>{isEditMode ? <input type="text" value={item.Nombre} onChange={(e) => handleInputChange(e, item.IDRepuesto, 'Nombre')} /> : item.Nombre}</td>

@@ -16,6 +16,7 @@ const ColaboradoresData = [
 
     const [isEditMode, setIsEditMode] = useState(false);
     const [data, setData] = useState(ColaboradoresData);
+    const [searchTerm, setSearchTerm] = useState('');
 
 
     const toggleEditMode = () => {
@@ -32,10 +33,25 @@ const ColaboradoresData = [
       });
       setData(newData);
     };
+
+    const filteredData = data.filter(item => {
+      return (
+        item.IDColaborador.toString().includes(searchTerm) ||
+        item.Nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.Puesto.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+
     
     return (
       <div>
         <h2>Registro de Colaboradores</h2>
+        <input 
+          type="text" 
+          placeholder="Buscar..." 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <button onClick={toggleEditMode}>{isEditMode ? 'Guardar' : 'Editar'}</button>
         <table>
           <thead>
@@ -46,7 +62,7 @@ const ColaboradoresData = [
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
+            {filteredData.map((item) => (
               <tr key={item.IDColaborador}>
                 <td>{item.IDColaborador}</td>
                 <td>{isEditMode ? <input type="text" value={item.Nombre} onChange={(e) => handleInputChange(e, item.IDColaborador, 'Nombre')} />: item.Nombre}
