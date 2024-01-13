@@ -24,3 +24,5 @@ yarn-error.log*
 
 Proyecto Web - Celtel.pdf
 firebase.txt
+firebaseConfig.js
+src/firebaseConfig.js
