@@ -1,21 +1,44 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./OrdenesCards.css";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./firebaseConfig";
 
-const OrdenesData = [
-    { IDOrden: 1, Estado: 'En progreso', Descripcion: 'Descripcion del problema de esta orden ', FechaEntrega: '2021-10-10'},
-    { IDOrden: 2, Estado: 'En progreso', Descripcion: 'Descripcion del problema de esta orden ', FechaEntrega: '2021-10-10'},
-    { IDOrden: 3, Estado: 'En progreso', Descripcion: 'Descripcion del problema de esta orden ', FechaEntrega: '2021-10-10'},
-    { IDOrden: 4, Estado: 'En progreso', Descripcion: 'Descripcion del problema de esta orden ', FechaEntrega: '2021-10-10'},
-    { IDOrden: 5, Estado: 'En progreso', Descripcion: 'Descripcion del problema de esta orden ', FechaEntrega: '2021-10-10'},
-    // mas datos
-  ];
+// const OrdenesData = [
+//     { IDOrden: 1, Estado: 'En progreso', Descripcion: 'Descripcion del problema de esta orden ', FechaEntrega: '2021-10-10'},
+//     { IDOrden: 2, Estado: 'En progreso', Descripcion: 'Descripcion del problema de esta orden ', FechaEntrega: '2021-10-10'},
+//     { IDOrden: 3, Estado: 'En progreso', Descripcion: 'Descripcion del problema de esta orden ', FechaEntrega: '2021-10-10'},
+//     { IDOrden: 4, Estado: 'En progreso', Descripcion: 'Descripcion del problema de esta orden ', FechaEntrega: '2021-10-10'},
+//     { IDOrden: 5, Estado: 'En progreso', Descripcion: 'Descripcion del problema de esta orden ', FechaEntrega: '2021-10-10'},
+//     // mas datos
+//   ];
 
   const Ordenes = () => {
 
     const [isEditMode, setIsEditMode] = useState(false);
-    const [data, setData] = useState(OrdenesData);
+    const [data, setData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const querySnapshot = await getDocs(collection(db, 'OrdenesData'));
+          const fetchedData = querySnapshot.docs.map(doc => {
+            const data = doc.data();
+            // Convert Timestamp to Date
+        if (data.FechaEntrega?.toDate) {
+          data.FechaEntrega = data.FechaEntrega.toDate().toISOString().split('T')[0];
+        }
+        return { ...data, IDOrden: doc.id };
+      });
+      setData(fetchedData);
+          //setData(querySnapshot.docs.map(doc => ({ ...doc.data(), IDOrden: doc.id })));
+        } catch (error) {
+          console.error("Error fetching data: ", error);
+        }
+      };
+      fetchData();
+    }, []);
 
 
     const toggleEditMode = () => {

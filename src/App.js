@@ -4,6 +4,7 @@ import './App.css';
 import Inventarios from "./InventarioCards";
 import Ordenes from "./OrdenesCards";
 import Colaboradores from "./ColaboradoresCards";
+import LoginPage from "./LoginPage";
 
 
 // Components for different pages
@@ -33,12 +34,13 @@ const App = () => {
   return (
     <Router>
       <nav className="navbar">
-      <Link to="/" className="logo">CelTel</Link>
-      <Link to="/" className="home-icon">⌂</Link>
+      <Link to="/home" className="logo">CelTel</Link>
+      <Link to="/home" className="home-icon">⌂</Link>
       </nav>
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/home" element={<HomePage />} /> {/* New path for HomePage */}
         <Route path="/inventarios" element={<Inventarios />} />
         <Route path="/ordenes" element={<Ordenes />} />
         <Route path="/colaboradores" element={<Colaboradores />} />

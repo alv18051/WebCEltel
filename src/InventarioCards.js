@@ -1,22 +1,40 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./InventarioCards.css";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./firebaseConfig";
 
-const inventariosData = [
-    { IDRepuesto: 1, Nombre: 'Repuesto A', Cantidad: 10, Precio: 100 },
-    { IDRepuesto: 2, Nombre: 'Repuesto B', Cantidad: 15, Precio: 150 },
-    { IDRepuesto: 3, Nombre: 'Repuesto C', Cantidad: 20, Precio: 200 },
-    { IDRepuesto: 4, Nombre: 'Repuesto C', Cantidad: 0, Precio: 250 },
-    // mas datos
-  ];
+
+// const inventariosData = [
+//     { IDRepuesto: 1, Nombre: 'Repuesto A', Cantidad: 10, Precio: 100 },
+//     { IDRepuesto: 2, Nombre: 'Repuesto B', Cantidad: 15, Precio: 150 },
+//     { IDRepuesto: 3, Nombre: 'Repuesto C', Cantidad: 20, Precio: 200 },
+//     { IDRepuesto: 4, Nombre: 'Repuesto C', Cantidad: 0, Precio: 250 },
+//     // mas datos
+//   ];
 
  
 
   const Inventarios = () => {
     
     const [isEditMode, setIsEditMode] = useState(false);
-    const [data, setData] = useState(inventariosData);
+    const [data, setData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const querySnapshot = await getDocs(collection(db, 'inventariosData'));
+          const data = querySnapshot.docs.map(doc => ({ ...doc.data(), IDRepuesto: doc.id }));
+          setData(data);
+        } catch (error) {
+          console.error("Error fetching data: ", error);
+        }
+      };
+  
+      fetchData();
+    }, []);
+    
 
 
     const toggleEditMode = () => {

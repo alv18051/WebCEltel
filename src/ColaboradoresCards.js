@@ -1,22 +1,36 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./ColaboradoresCards.css";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./firebaseConfig";
 
-const ColaboradoresData = [
-    { IDColaborador: 1, Nombre: 'Jane Doe', Puesto: 'Gerente'},
-    { IDColaborador: 2, Nombre: 'Jane Doe1', Puesto: 'Ventas'},
-    { IDColaborador: 3, Nombre: 'Jane Doe2', Puesto: 'Ventas'},
-    { IDColaborador: 4, Nombre: 'Jane Doe3', Puesto: 'Ventas'},
-    { IDColaborador: 5, Nombre: 'Jane Doe4', Puesto: 'Ventas'},
-    { IDColaborador: 6, Nombre: 'Jane Doe5', Puesto: 'Limpieza'},
-    // mas datos
-  ];
+// const ColaboradoresData = [
+//     { IDColaborador: 1, Nombre: 'Jane Doe', Puesto: 'Gerente'},
+//     { IDColaborador: 2, Nombre: 'Jane Doe1', Puesto: 'Ventas'},
+//     { IDColaborador: 3, Nombre: 'Jane Doe2', Puesto: 'Ventas'},
+//     { IDColaborador: 4, Nombre: 'Jane Doe3', Puesto: 'Ventas'},
+//     { IDColaborador: 5, Nombre: 'Jane Doe4', Puesto: 'Ventas'},
+//     { IDColaborador: 6, Nombre: 'Jane Doe5', Puesto: 'Limpieza'},
+//     // mas datos
+//   ];
 
   const Colaboradores = () => {
 
     const [isEditMode, setIsEditMode] = useState(false);
-    const [data, setData] = useState(ColaboradoresData);
+    const [data, setData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const querySnapshot = await getDocs(collection(db, 'ColaboradoresData'));
+          setData(querySnapshot.docs.map(doc => ({ ...doc.data(), IDColaborador: doc.id })));
+        } catch (error) {
+          console.error("Error fetching data: ", error);
+        }
+      };
+      fetchData();
+    }, []);
 
 
     const toggleEditMode = () => {
