@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/WebCEltel/static/css/main.a319b89c.css",
+    "main.js": "/WebCEltel/static/js/main.0f9983f0.js",
+    "static/js/787.32342bb4.chunk.js": "/WebCEltel/static/js/787.32342bb4.chunk.js",
+    "index.html": "/WebCEltel/index.html",
+    "main.a319b89c.css.map": "/WebCEltel/static/css/main.a319b89c.css.map",
+    "main.0f9983f0.js.map": "/WebCEltel/static/js/main.0f9983f0.js.map",
+    "787.32342bb4.chunk.js.map": "/WebCEltel/static/js/787.32342bb4.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a319b89c.css",
+    "static/js/main.0f9983f0.js"
+  ]
+}
