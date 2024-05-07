@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import "./InventarioCards.css";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebaseConfig";
-
+import { doc, updateDoc } from "firebase/firestore";
+import AddItemModal from "./Modal.js";
 
 // const inventariosData = [
 //     { IDRepuesto: 1, Nombre: 'Repuesto A', Cantidad: 10, Precio: 100 },
@@ -20,12 +21,36 @@ import { db } from "./firebaseConfig";
     const [isEditMode, setIsEditMode] = useState(false);
     const [data, setData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+      setIsModalOpen(true);
+    };
+  
+
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
+
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'inventariosData'));
+        const data = querySnapshot.docs.map(doc => ({ ...doc.data(), IDRepuesto: doc.id }));
+        setData(data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchData();
+    }, []);
 
     useEffect(() => {
       const fetchData = async () => {
         try {
           const querySnapshot = await getDocs(collection(db, 'inventariosData'));
-          const data = querySnapshot.docs.map(doc => ({ ...doc.data(), IDRepuesto: doc.id }));
+          const data = querySnapshot.docs.map(doc => ({ ...doc.data(), IDRepuesto: doc.id, }));
           setData(data);
         } catch (error) {
           console.error("Error fetching data: ", error);
@@ -62,6 +87,23 @@ import { db } from "./firebaseConfig";
         item.Precio.toString().includes(searchTerm)
       );
     });
+
+    const handleSaveChanges = async () => {
+      try {
+        for (const item of data) {
+          const docRef = doc(db, 'inventariosData', item.id); 
+          await updateDoc(docRef, {
+            Nombre: item.Nombre,
+            Cantidad: item.Cantidad,
+            Precio: item.Precio
+          });
+        }
+        setIsEditMode(false); 
+      } catch (error) {
+        console.error("Error updating document: ", error,);
+      }
+    };
+    
     
     
 
@@ -74,7 +116,13 @@ import { db } from "./firebaseConfig";
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button onClick={toggleEditMode}>{isEditMode ? 'Guardar' : 'Editar'}</button>
+        <button onClick={fetchData}>Refrescar</button>
+        <button onClick={openModal}>Agregar Nuevo Item</button>
+      <AddItemModal isOpen={isModalOpen} onClose={closeModal} />
+        <button onClick={isEditMode ? handleSaveChanges : toggleEditMode}>
+            {isEditMode ? 'Guardar' : 'Editar'}
+        </button>
+
         <table>
           <thead>
             <tr>

@@ -13,7 +13,7 @@ const LoginPage = () => {
 
 
   const handleLogin = async (event) => {
-    event.preventDefault(); // Prevent the form from refreshing the page
+    event.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setErrorMessage('');

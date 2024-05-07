@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import "./ColaboradoresCards.css";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebaseConfig";
+import AddColaboradorModal from "./Modal3";
 
 // const ColaboradoresData = [
 //     { IDColaborador: 1, Nombre: 'Jane Doe', Puesto: 'Gerente'},
@@ -19,6 +20,25 @@ import { db } from "./firebaseConfig";
     const [isEditMode, setIsEditMode] = useState(false);
     const [data, setData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+ 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const fetchData = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'ColaboradoresData'));
+      setData(querySnapshot.docs.map(doc => ({ ...doc.data(), IDColaborador: doc.id })));
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
 
     useEffect(() => {
       const fetchData = async () => {
@@ -65,6 +85,9 @@ import { db } from "./firebaseConfig";
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <button onClick={openModal}>Agregar Nuevo Colaborador</button>
+        <AddColaboradorModal isOpen={isModalOpen} onClose={closeModal} />
+        <button onClick={fetchData}>Refrescar Colaboradores</button>
         <button onClick={toggleEditMode}>{isEditMode ? 'Guardar' : 'Editar'}</button>
         <table>
           <thead>

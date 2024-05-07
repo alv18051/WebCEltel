@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import "./OrdenesCards.css";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebaseConfig";
+import AddOrdenModal from "./Modal2";
 
 // const OrdenesData = [
 //     { IDOrden: 1, Estado: 'En progreso', Descripcion: 'Descripcion del problema de esta orden ', FechaEntrega: '2021-10-10'},
@@ -18,6 +19,37 @@ import { db } from "./firebaseConfig";
     const [isEditMode, setIsEditMode] = useState(false);
     const [data, setData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+const fetchData = async () => {
+  setIsLoading(true);
+  try {
+    const querySnapshot = await getDocs(collection(db, 'OrdenesData'));
+    const fetchedData = querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      if (data.FechaEntrega?.toDate) {
+        data.FechaEntrega = data.FechaEntrega.toDate().toISOString().split('T')[0];
+      }
+      return { ...data, IDOrden: doc.id };
+    });
+    setData(fetchedData);
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
+    const openModal = () => {
+      setIsModalOpen(true);
+    };
+  
+ 
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
 
     useEffect(() => {
       const fetchData = async () => {
@@ -74,6 +106,9 @@ import { db } from "./firebaseConfig";
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <button onClick={openModal}>Agregar Nueva Orden</button>
+      <AddOrdenModal isOpen={isModalOpen} onClose={closeModal} />
+      <button onClick={fetchData}>Refrescar</button>
         <button onClick={toggleEditMode}>{isEditMode ? 'Guardar' : 'Editar'}</button>
         <table>
           <thead>

@@ -5,7 +5,35 @@ import Inventarios from "./InventarioCards";
 import Ordenes from "./OrdenesCards";
 import Colaboradores from "./ColaboradoresCards";
 import LoginPage from "./LoginPage";
+import ProtectedRoute from "./ProtectedRoute";
+import { signOut } from "firebase/auth";
+import { auth } from './firebaseConfig'; 
+import { useNavigate } from 'react-router-dom';
 
+
+// const handleLogout = async () => {
+  
+//   try {
+//     await signOut(auth);
+//     // Puedes redirigir al usuario a la página de inicio de sesión o manejar el cierre de sesión como prefieras
+//     console.log("Usuario ha cerrado sesión");
+//   } catch (error) {
+//     console.error("Error al cerrar sesión: ", error);
+//   }
+// };
+
+const LogoutButton = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    navigate("/"); // Redirige al usuario a la página de inicio de sesión
+  };
+
+  return (
+    <button className="logout-button" onClick={handleLogout}>Logout</button>
+  );
+};
 
 // Components for different pages
 const HomePage = () => (
@@ -30,20 +58,42 @@ const HomePage = () => (
 
 
 // App component with routing
+// const App = () => {
+//   return (
+//     <Router>
+//       <nav className="navbar">
+//       <Link to="/home" className="logo">CelTel</Link>
+//       <Link to="/home" className="home-icon">⌂</Link>
+//       </nav>
+
+//       <Routes>
+//         <Route path="/" element={<LoginPage />} />
+//         <Route path="/home" element={<HomePage />} /> {/* New path for HomePage */}
+//         <Route path="/inventarios" element={<Inventarios />} />
+//         <Route path="/ordenes" element={<Ordenes />} />
+//         <Route path="/colaboradores" element={<Colaboradores />} />
+//       </Routes>
+//     </Router>
+//   );
+// };
+
 const App = () => {
   return (
     <Router>
       <nav className="navbar">
-      <Link to="/home" className="logo">CelTel</Link>
-      <Link to="/home" className="home-icon">⌂</Link>
+        <Link to="/home" className="logo">CelTel</Link>
+        <Link to="/home" className="home-icon">⌂</Link>
+        <LogoutButton />
       </nav>
 
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/home" element={<HomePage />} /> {/* New path for HomePage */}
-        <Route path="/inventarios" element={<Inventarios />} />
-        <Route path="/ordenes" element={<Ordenes />} />
-        <Route path="/colaboradores" element={<Colaboradores />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/inventarios" element={<Inventarios />} />
+          <Route path="/ordenes" element={<Ordenes />} />
+          <Route path="/colaboradores" element={<Colaboradores />} />
+        </Route>
       </Routes>
     </Router>
   );

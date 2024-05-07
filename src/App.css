@@ -49,20 +49,20 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #4295f5;  /* Blue background */
+  background-color: #4295f5;  
   color: #ffffff;
   text-decoration: none;
   font-weight: bold;
   border-radius: 5px;
   padding: 1rem;
-  width: 200px; /* Adjust the width as needed */
-  border: 1px solid #ccc; /* Add a border around the button */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  width: 200px; 
+  border: 1px solid #ccc; 
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .square-button i {
-  font-size: 36px; /* Adjust the icon size */
-  margin-bottom: 0.5rem; /* Add space between icon and button text */
+  font-size: 36px; 
+  margin-bottom: 0.5rem; 
 }
 
 .square-button:hover {
@@ -73,22 +73,21 @@ body {
 .square-button {
   display: flex;
   align-items: center;
-  background-color: #4295f5;  /* Blue background */
+  background-color: #4295f5;  
   color: #ffffff;
   text-decoration: none;
   font-weight: bold;
   border-radius: 5px;
   padding: 1rem;
-  width: 200px; /* Adjust the width as needed */
-  border: 1px solid #ccc; /* Add a border around the button */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
-  margin: 0.5rem; /* Add margin to create space between buttons */
+  width: 200px; 
+  border: 1px solid #ccc; 
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
+  margin: 0.5rem; 
 }
 
-/* Style for the icon */
 .square-button i {
-  font-size: 36px; /* Adjust the icon size */
-  margin-right: 10px; /* Add space between icon and button text */
+  font-size: 36px; 
+  margin-right: 10px; 
 }
 
 .square-button:hover {
@@ -105,16 +104,24 @@ body {
 }
 
 .square-button {
-  /* ... existing styles ... */
-  margin: 0.8rem; /* Adjust the margin as needed */
-  width: 300px; /* Increased width */
-  height: 350px; /* Increased height */
-  padding: 1.8rem; /* Increased padding for height */
+  margin: 0.8rem; 
+  width: 300px; 
+  height: 350px;
+  padding: 1.8rem; 
   font-size: 1.2rem;
   display: flex;
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Center items horizontally in the button */
-  justify-content: center; /* Center items vertically in the button */
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+}
+.logout-button {
+  padding: 8px 16px;
+  margin-left: auto;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 @media (max-width: 600px) {
